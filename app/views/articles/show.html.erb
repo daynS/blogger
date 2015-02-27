@@ -4,6 +4,13 @@
 </head>
 
 <h1><%= @article.title %></h1>
+<h2>Written by:
+	<% if @article.author %>
+		<%= link_to @article.author.username, author_path(@article.author) %>
+	<% else %>
+		<em>--redacted--</em>
+	<% end %>
+</h2>
 <% if @article.image.exists? %>
 	<p><%= image_tag @article.image.url %></p>
 <% end %>
@@ -17,7 +24,7 @@
 </p>
 <br /><br />
 
-<% if logged_in? %>
+<% if current_user.id == @article.author_id %>
 	<%= link_to 'Delete', article_path(@article), method: :delete, 
 	data: {confirm: "Really delete '#{@article.title}'?" } %> || 
 	<%= link_to "edit", edit_article_path(@article) %>
